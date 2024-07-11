@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .form{
+            display: block;
+            margin: 24px;
+        }
+        
+        .row {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .row label{
+            width: 80px;
+        }
+        .url-box{
+            flex: 1;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <form class="form">
+        <p class="row">Launch puppeteer</p>
+        <p class="row">
+            <label>url: </label>
+            <input class="url-box" type="text">
+        </p>
+        <p class="row">
+            <label>Is headless: </label>
+            <input class="is-headless" type="checkbox">
+        </p>
+        <p class="row">
+            <label></label>
+            <input id="submit" type="button" value="submit" />
+        </p>
+    </form>
+
+    <form class="form">
+        <p class="row">Click page on puppeteer</p>
+        <p class="row">
+            <label>x: </label>
+            <input class="x-path" type="number">
+        </p>
+        <p class="row">
+            <label>y: </label>
+            <input class="y-path" type="number">
+        </p>
+        <p class="row">
+            <label></label>
+            <input id="click-submit" type="button" value="page click" />
+        </p>
+    </form>
+    <script>
+        const launchSubmit = document.getElementById("submit");
+        launchSubmit.addEventListener("click", function(e) {
+            e.preventDefault();
+            const urlNode = document.querySelector(".url-box");
+            const headlessNode = document.querySelector(".is-headless");
+            const url = urlNode.value;
+            const isHeadless = headlessNode.checked;
+
+            if (!url) {
+                alert("Please type url.");
+                return;
+            }
+
+            fetch(`/launch?url=${encodeURIComponent(url)}&is_headless=${isHeadless}`);
+        });
+
+        const pageClickSubmit = document.getElementById("click-submit");
+        pageClickSubmit.addEventListener('click', function(e) {
+            console.log(123);
+            e.preventDefault();
+            const x = document.querySelector(".x-path").value || 0;
+            const y = document.querySelector('.y-path').value || 0;
+
+            fetch(`/click?x=${x}&y=${y}`);
+        })
+    </script>
+</body>
+</html>
